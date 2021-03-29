@@ -17,34 +17,35 @@
 from tkinter import *
 import random
 
-#make a window with title
+#creating a window and a title
 window = Tk()
 window.title('The Candy Monster Game')
 
-#create a canvas to put objects on the screen
+#creating a canvas so we can put objects on the screen (objects like the monster image and the shapes/candies that fall from the sky)
 canvas = Canvas(window, width=400, height=400, bg='black')
 canvas.pack()
 
-#set up welcome screen with title and directions
+#This is the welcome screen where the player will get the title and the instructions on what to do.
+#this is displayed for 3 seconds, and then the game starts
 title = canvas.create_text(200,200, text='The Candy Monster', fill='white', \
 font=('Helvetica', 30))
 
 directions = canvas.create_text(200,275, text='Collect candy but avoid \
 the red ones', fill='white', font=('Helvetica', 15))
 
-#add label widget to show score
+#add label to display the score
 scoreadd = 1
 score = 0
 score_display = Label(window, text="Score :" + str(score))
 score_display.pack()
 
-#add label widget to show level
+#add label to display the level
 level = 1
 level_display = Label(window,text="Level :" + str(level))
 level_display.pack()
 
-#create an image object using a file saved to computer
-player_image = PhotoImage(file='greenChar.gif')
+#creating an image object (the green monster) using a file saved to computer
+player_image = PhotoImage(file='greenChar.gif') #<-- IMPORTANT make sure this greenChar.gif file is saved in the same folder at this python file or it will CRASH
 mychar = canvas.create_image(200,360, image=player_image)
 
 #variables and lists needed for managing candy
@@ -106,7 +107,7 @@ def update_score():
         window.destroy() #end the game when the user hits 20 points
 
 
-# check distance between 2 objects and return true if they touch
+# check distance between 2 objects and return true if they are touching. This is to keep track of when the monster collects the candy
 def collision(item1, item2, distance):
     xdistance = abs(canvas.coords(item1)[0] - canvas.coords(item2)[0])
     ydistance = abs(canvas.coords(item1)[1] - canvas.coords(item2)[1])
@@ -114,7 +115,7 @@ def collision(item1, item2, distance):
     return overlap
 
 # define function check_hits to see if character and candy collided
-# if character collides with candy in candy_list, delete it (character "eats" it) and update score
+# if character collides with candy in candy_list, the program deletes it (character "eats" it) and update score
 def check_hits():
     global scoreadd
     
@@ -131,10 +132,10 @@ def check_hits():
             update_score()
     window.after(100, check_hits) #schedule check_hits again
 
-#track which direction player is moving
+#tracks which direction player is moving
 move_direction = 0
 
-#function handles when user presses arrow keys
+#function handles when user presses arrow keys (you can only use left and right arrows
 def check_press(event): 
     global move_direction
     key = event.keysym
@@ -161,11 +162,11 @@ canvas.bind_all('<KeyPress>', check_press)
 canvas.bind_all('<KeyRelease>', end_press)
     
 #start game loop by scheduling all functions here:
-window.after(1000, end_title)
-window.after(1000, make_candy)
-window.after(1000, move_candy)
-window.after(1000, check_hits)
-window.after(1000, move_character) #handle keyboard controls
+window.after(3000, end_title)
+window.after(3000, make_candy)
+window.after(3000, move_candy)
+window.after(3000, check_hits)
+window.after(3000, move_character) #handle keyboard controls
 
 window.mainloop()
 
